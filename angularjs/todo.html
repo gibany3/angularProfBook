@@ -10,14 +10,16 @@
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.22/angular.js"></script>
     <script>
         var model = {
-            user: "Adam",
-            items: [{action: "Kupić kwiaty", done: false},
-                {action: "Kupić buty", done: false},
-                {action: "Odebrać bilety", done: false},
-                {action: "Zadzwonić do Janka", done: false}]
+            user: "Adam"
         };
 
         var todoApp = angular.module("todoApp", []);
+
+        todoApp.run(function ($http) {
+            $http.get("todo.json").success(function (data) {
+                model.items = data;
+            });
+        });
 
         todoApp.filter("checkedItems", function () {
             return function (items, showComplete) {
@@ -73,12 +75,15 @@
         <th>Zrobione</th>
         </thead>
         <tbody>
-            <tr ng-repeat="item in todo.items | filter:{done: false} | orderBy: 'action'">
+            <tr ng-repeat="item in todo.items | checkedItems:showComplete | orderBy: 'action'">
                 <td>{{item.action}}</td>
                 <td><input type="checkbox" ng-model="item.done"></td>
             </tr>
         </tbody>
     </table>
+    <div class="checkbox-inline">
+        <label><input type="checkbox" ng-model="showComplete"> Pokaż zakończone</label>
+    </div>
 </div>
 
 <script>document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1"></' + 'script>')</script>
