@@ -23,28 +23,12 @@
 <div class="navbar navbar-inverse">
     <a class="navbar-brand" href="#">SKLEP SPORTOWY</a>
 </div>
-<div class="panel panel-default row" ng-controller="productListCtrl">
-    <div class="col-xs-3">
-        <a ng-click="selectCategory()" class="btn btn-block btn-default btn-lg">Strona główna</a>
-        <a class="btn btn-block btn-default btn-lg"
-           ng-repeat="item in data.products | orderBy:'category' | unique: 'category'"
-           ng-click="selectCategory(item)"
-           ng-class="getCategoryClass(item)">
-            {{item}}
-        </a>
-    </div>
-    <div class="col-xs-8">
-        <div class="well" ng-repeat="item in data.products | filter: categoryFilterFn">
-            <h3>
-                <strong>{{item.name}}</strong>
-                <span class="pull-right label label-primary">
-                    {{item.price | currency}}
-                </span>
-            </h3>
-            <span class="lead">{{item.description}}</span>
-        </div>
-    </div>
+<div class="alert alert-danger" ng-show="data.error">
+    Błąd ({{data.error.status}}). Dane produktu nie zostały wczytane.
+    <a href="/app.html" class="alert-lin">Kliknij tutaj, aby spróbować ponownie</a>
 </div>
+
+<ng-include src="'views/productList.html'"></ng-include>
 
 <script>document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1"></' + 'script>')</script>
 </body>
